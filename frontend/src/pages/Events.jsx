@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-
+import { useLoaderData } from 'react-router-dom';
 /* Now, ther eis nothing wrong with debt code, but of course it is worth noting
  * that it's a quite some boiler plate code which we have to repeat everytime
  * we're sending a request to a backend.
@@ -47,27 +46,45 @@ import { useEffect, useState } from 'react';
  */
 import EventsList from '../components/EventsList';
 
+/* To get access to the data returned by our loader, here as a first step, we
+ * can get rid of all the remaining code which we had in here before. all that
+ * state management and useEffect and get rid of this div here in the return
+ * which shows our loading and error states.
+ * We can implement those states in the near future.
+ * Also remove the checks and just return events like below and also we can
+ * get rid of those removed imports.
+ * And now to get access to the data returned by the loader functoin for this
+ * page, 'useLoaderData' from react router dom.
+ * This is a special hook which we can execute to get access to the closest
+ * loader data.
+ * So here we now get our data, by calling 'useLoaderData'. we could also name
+ * it events since we know that it will be a list of events.
+ * And events here will really be that data returned by that loader.
+ * Now since we're using async await, technically this loader function will
+ * return a promsie. Any data returned in that loader function will be wrapped
+ * by a promise, that's how async await works.
+ * But React Router will actually check if a primise is returned and automatically
+ * get the resolved data from that promise for you.
+ * So we don't need to worry about whether we're returning a promise here or not,
+ * we'll always get the final data that would be yielded by the promise with
+ * the help of useLoaderData.
+ * And therefore now it's this events object, this array of events, which
+ * we can pass as a value to this events prop on events list.
+ * If we save that all, we will see that we got the same result as before,
+ * we got this list of events, in this case only one event, but if we had
+ * multiple events returned by the backend, we would see multiple events here on
+ * localhost:3000/events
+ * And we got this all due to the code we wrote in this loader.
+ * And ofcouse that's much less code than what we had before, and it's also not
+ * part of the component function, which makes the component function way
+ * leaner and easier to reason about.
+ */
 function EventsPage() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [fetchedEvents, setFetchedEvents] = useState();
-  const [error, setError] = useState();
+  const events = useLoaderData();
 
-  useEffect(() => {
-    async function fetchEvents() {
-      setIsLoading(true);
-
-      setIsLoading(false);
-    }
-
-    fetchEvents();
-  }, []);
   return (
     <>
-      <div style={{ textAlign: 'center' }}>
-        {isLoading && <p>Loading...</p>}
-        {error && <p>{error}</p>}
-      </div>
-      {!isLoading && fetchedEvents && <EventsList events={fetchedEvents} />}
+      <EventsList events={events} />
     </>
   );
 }

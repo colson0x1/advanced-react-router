@@ -72,6 +72,9 @@ const router = createBrowserRouter([
          * dummy events from the backend.
          * And with that, this data is made available to the events page and
          * any other components that need the data.
+         * How do we get access to that data returned by our loader is, we
+         * have to go that component where we wanna use it. Like for example,
+         * the events page component.
          */
 
         children: [
