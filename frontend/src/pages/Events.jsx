@@ -117,6 +117,22 @@ export default EventsPage;
 // Now with this, this loader code is in this function.
 // Back in App.jsx, we can simply import that loader and give it an alias
 // like eventsLoader
+
+/*
+ * // What kind of code goes into the loader function!
+ * This might look like backend code. It might look like its decoupled from
+ * React application and it kind of is.
+ * But, this code that's defined in the loader, executes inthe browser,
+ * not some server.
+ * This means, we can use any browser APIs in our loader function. We can for
+ * example access local storage, cookies, .. we can do anything that we can
+ * do in JavaScript code as well.
+ * What we can't do in our loader function is for example use React hooks like
+ * useState. That does not work because those hooks are only available
+ * in React Components and the loader function is not a React Component.
+ * But that's the only limitation. Any other default browser features
+ * can be used in loader functions
+ */
 export async function loader() {
   const response = await fetch('http://localhost:8080/events');
 
