@@ -100,6 +100,21 @@ function EventsPage() {
   // Hence, this special kind of return object is supported by React Router and
   // its loader functions.
   const data = useLoaderData();
+
+  // In our component code, we could now simply check, if this error property
+  // which we set exists, and is truth, and if that's the case, we could
+  // return a paragraph where we output error message
+  // With this, we still have  a pretty lean component.
+  // We only added this code here and we have the error generation and handling
+  // code in our loader where it belongs, arguably.
+  // We can check the error by adding wrong path that doesn't exist on the backend
+  // on the loader function in fetch
+  // So that's one way of handling errors. SImply returning data that indicates
+  // that we have an error and then suing that data appropriately in the component.
+  if (data.isError) {
+    return <p>{data.message}</p>;
+  }
+
   const events = data.events;
 
   return (
@@ -134,10 +149,17 @@ export default EventsPage;
  * can be used in loader functions
  */
 export async function loader() {
-  const response = await fetch('http://localhost:8080/events');
+  const response = await fetch('http://localhost:8080/event');
 
+  // Handling error
+  // If the response code is not ok, if it has 400ish or 500 ish response code:
+  // What we can do in that case is we can return a different response,
+  // for example, or just return an object. Doesn't have to be a response.
+  // where we could add isError key and message.
+  // So now we return this data package instead of the response returned by our
+  // API request here.
   if (!response.ok) {
-    // ..
+    return { isError: true, message: 'Cold not fetch events.' };
   } else {
     /* const resData = await response.json(); */
     // One important aspect of a loader is that we can return any kind of
