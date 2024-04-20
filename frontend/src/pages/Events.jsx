@@ -100,3 +100,20 @@ function EventsPage() {
 }
 
 export default EventsPage;
+
+// Here we can simply export a function which we could name loader or something,
+// and we put our code, our loader code into this function
+// we'll turn this fn to async await
+// Now with this, this loader code is in this function.
+// Back in App.jsx, we can simply import that loader and give it an alias
+// like eventsLoader
+export async function loader() {
+  const response = await fetch('http://localhost:8080/events');
+
+  if (!response.ok) {
+    // ..
+  } else {
+    const resData = await response.json();
+    return resData.events;
+  }
+}

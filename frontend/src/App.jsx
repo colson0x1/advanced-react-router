@@ -1,7 +1,9 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import EditEventPage from './pages/EditEvent';
 import EventDetailPage from './pages/EventDetail';
-import EventsPage from './pages/Events';
+// This is simply a pointer at that function which we define and export
+// there in Event.jsx
+import EventsPage, { loader as eventsLoader } from './pages/Events';
 import EventsRootLayout from './pages/EventsRoot';
 import HomePage from './pages/Home';
 import NewEventPage from './pages/NewEvent';
@@ -77,20 +79,36 @@ const router = createBrowserRouter([
          * the events page component.
          */
 
+        /* So we added our loader here. We could argue that while this did
+         * improve our component, it actually made this App.jsx file a bit more
+         * bloated. And especially if we would add more loaders to more and
+         * more routes, this file would start doing a lot of things.
+         * We could also argue that the logic for fetching data for the events
+         * page belongs to the events page and not to the App.jsx file.
+         * So we might want to put that code into the Events page file and not
+         * into the App.jsx file.
+         * And for those reasons, a common pattern or recommendation is that,
+         * we do actually put that loader code here into our component file
+         * where we need it.
+         * So to the page component file where we wanna add the loader to be
+         * precise i.e pages/Events.jsx
+         */
+
+        /* Now we can use eventsLoader which is that pointer at that function
+        and use that as  a value for this loader property here.
+        * And with that, App.jsx is leaner again and doesn't contain the actual
+        * data fetching logic. 
+        * And at the same time, the pages/Events.jsx component is also still 
+        * lean because we outsource that code in a separate function which is now 
+        * closer to the component where it's actually needed though.
+        * And that is arguably the best of both worlds and how we should typically
+        * structure this.
+        */
         children: [
           {
             index: true,
             element: <EventsPage />,
-            loader: async () => {
-              const response = await fetch('http://localhost:8080/events');
-
-              if (!response.ok) {
-                // ..
-              } else {
-                const resData = await response.json();
-                return resData.events;
-              }
-            },
+            loader: eventsLoader,
           },
           { path: ':eventId', element: <EventDetailPage /> },
           { path: 'new', element: <NewEventPage /> },
