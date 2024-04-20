@@ -104,6 +104,34 @@ const router = createBrowserRouter([
         * And that is arguably the best of both worlds and how we should typically
         * structure this.
         */
+
+        /* The loader for this page will be called right when we start navigating
+        to that page. So not after the page component has been rendered, but
+        before we actually go there */
+        /* lets introduce delay on the backend/routes/events.js
+         * that will simply ensure that the response is only sent back from
+         * from the backend to the frontend afer one and half seconds.
+         * We're introducing this delay here to see how this is reflected on the
+         * frontend.
+         * now we go to localhost:3000/ i.e the home page and after that when we
+         * click on, events page, we'll see that nothing happens and only after
+         * one and a half seconds we go there.
+         * So there we click on events, wait and go there to events page.
+         * Because the data fetching is initiated as soon as we initiate the
+         * route transition.
+         * But by default, React Router will actually wait for the data to be
+         * fetched so for the loader to be finished before it then renders the
+         * page with the fetched data.
+         * The advantage of this approach is that we can rely on the data being
+         * there once the events page component is being rendered.
+         * We don't need to worry about whether the data is there yet or not
+         * and therefore we don't need to render a loading state on this
+         * events page component i.e pages/Events.jsx or localhost:3000/events
+         * The downside of course is that we have this delay where it looks to the
+         * user as if nothing is happening.
+         * React router gives us a various tools for improving that user experience.
+         *
+         */
         children: [
           {
             index: true,
