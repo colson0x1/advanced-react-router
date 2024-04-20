@@ -149,7 +149,8 @@ export default EventsPage;
  * can be used in loader functions
  */
 export async function loader() {
-  const response = await fetch('http://localhost:8080/event');
+  // const response = await fetch('http://localhost:8080/eventssss');
+  const response = await fetch('http://localhost:8080/events');
 
   // Handling error
   // If the response code is not ok, if it has 400ish or 500 ish response code:
@@ -188,7 +189,22 @@ export async function loader() {
      * bubble up until it reaches that route in App.jsx
      *
      * */
-    throw { message: 'Could not fetch events..' };
+    // throw { message: 'Could not fetch events..' };
+    // To differentiate between 404 and other errors what we can do is, instead
+    // of throwing a object, we can throw a response by again creating a new
+    // response. And then we can include some data into that response.
+    // For this we have to call JSON.stringify() if we want to pass object to the
+    // response and then we could add a message prop. and now we can add second
+    // argument to this response constructor and set the status for example to
+    // 500 to indicate that something went wrong on the backend.
+    // We're doing this because we can actually get hold of the data that's
+    // being thrown as an error inside of the component that's being rendered
+    // as an error element.
+    // And for that, React Router DOM gives us another special hook called
+    // useRouteError hook. -> pages/Error.jsx
+    throw new Response(JSON.stringify({ message: 'Could not fetch events!' }), {
+      status: 500,
+    });
   } else {
     /* const resData = await response.json(); */
     // One important aspect of a loader is that we can return any kind of
