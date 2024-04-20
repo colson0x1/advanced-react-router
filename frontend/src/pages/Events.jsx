@@ -1,4 +1,5 @@
 import { useLoaderData } from 'react-router-dom';
+
 /* Now, ther eis nothing wrong with debt code, but of course it is worth noting
  * that it's a quite some boiler plate code which we have to repeat everytime
  * we're sending a request to a backend.
@@ -78,6 +79,15 @@ import EventsList from '../components/EventsList';
  * And ofcouse that's much less code than what we had before, and it's also not
  * part of the component function, which makes the component function way
  * leaner and easier to reason about.
+ */
+
+/* where else can we use it?
+ * we could also use it directly inside the EventsList component.
+ * So instead of using it here, and instead of importing it here,
+ * we could go to this EventsList component and use this hook there.
+ *
+ * We just have to be careful, that if we're not accidentally using useLoaderData
+ * on a higher level than we're fetching the data!
  */
 function EventsPage() {
   const events = useLoaderData();
