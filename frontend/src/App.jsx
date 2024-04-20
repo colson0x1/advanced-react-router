@@ -156,13 +156,51 @@ const router = createBrowserRouter([
             // errorElement: <ErrorPage />,
             loader: eventsLoader,
           },
+          // using nested routes to construct a url with the parent route
+          // URL and the child route URLs. And here we don't have element
+          // because we don't want to have any shared layout or anything like that.
+          // We're using this approach because we want to add a loader to this route.
+          // We are using nested route feature so that data from eventDetaiLoader
+          // is available to both EventDetailPage and EditEventPage Component
+          // Hence, we can also use this nested routes feature not just to use
+          // a wrapper layout component but also to use a shared loader.
+          // We can access this loader data with useLoaderData hook in any
+          // component that's on the same level or a lower level than the route
+          // where the loader is added to.
+          // So with that, this loader on eventId route, will execute whenever
+          // we visit the children routes of it
+          // That allows us to reuse the logic and data of that loader in both
+          // these routes down here
+          // When we use loader data, it searches for the closest available
+          // loader data and the highest level at which it looks for data is the
+          // route definition of the route for which this component was loaded.
+          // So in this case, the highest level it looks up for data is
+          // edit route here.
+          // But we actually want loader data from this eventId parent route.
+          // And to make sure that we use this loader's data instead.
+          // So the data from this parent route, we should add a special ID
+          // property which we can add to our route definitions.
+          // And for example, name this event-detail
+          // Then on EventDetail.jsx, instead of using useLoaderData, we use
+          // slightly different hook called: useRouteLoaderData
+          // So that's how we can get access to a higher level loader from
+          // a route that doesn't have a loader.
+          // We use useRouteLoaderData instead of useLoaderData.
+          // But now we can reuse that loader across multiple routes which
+          // all needs the same data.
           {
             path: ':eventId',
-            element: <EventDetailPage />,
+            id: 'event-detail',
             loader: eventDetailLoader,
+            children: [
+              {
+                index: true,
+                element: <EventDetailPage />,
+              },
+              { path: 'new', element: <NewEventPage /> },
+              { path: 'edit', element: <EditEventPage /> },
+            ],
           },
-          { path: 'new', element: <NewEventPage /> },
-          { path: ':eventId/edit', element: <EditEventPage /> },
         ],
       },
     ],

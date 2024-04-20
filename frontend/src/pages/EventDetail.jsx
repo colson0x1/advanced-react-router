@@ -1,4 +1,6 @@
-import { json, useParams, useLoaderData } from 'react-router-dom';
+// we use useRouteLoaderData instead of useLoaderData whenever we use want to
+// get access of the loader in the parent route which has ID specified
+import { json, useParams, useRouteLoaderData } from 'react-router-dom';
 import EventItem from '../components/EventItem';
 
 function EventDetailPage() {
@@ -8,7 +10,9 @@ function EventDetailPage() {
   // So for the values used there i.e :eventId on App
   // const params = useParams();
 
-  const data = useLoaderData();
+  // this hooks almost works like a useLoaderData but it takes a route ID as
+  // an argument
+  const data = useRouteLoaderData('event-detail');
   // now we can visit the single events and view the details
   return <EventItem event={data.event} />;
 }
