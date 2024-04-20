@@ -12,9 +12,13 @@ const router = express.Router();
 router.get('/', async (req, res, next) => {
   try {
     const events = await getAll();
-    setTimeout(() => {
-      res.json({ events: events });
-    }, 1500);
+
+    // introduce delay to check loading state with React Router DOM
+    // setTimeout(() => {
+    //   res.json({ events: events });
+    // }, 1500);
+
+    res.json({ events: events });
   } catch (error) {
     next(error);
   }

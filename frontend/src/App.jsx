@@ -132,6 +132,19 @@ const router = createBrowserRouter([
          * React router gives us a various tools for improving that user experience.
          *
          */
+
+        /* So how could we give the user some feedback that something's going on
+         * here after clicking on Events is,
+         * React Router gives us a special hook, which we can use to check
+         * the current route transitions state.
+         * SO to find out if a transition has been initiated and we're currently
+         * still waiting for data to arrive of if we're done:
+         * We could go to the root layout component i.e pages/Root.jsx
+         * and there use the useNavigation hook which is a hook provided by
+         * React Router that lets us find out whether we're currently in an
+         * active transition if we're loading data, of if we have no active transition
+         * going on.
+         */
         children: [
           {
             index: true,
