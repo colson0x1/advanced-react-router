@@ -40,6 +40,7 @@ function ErrorPage() {
     // object because otherwise its still JSON in JSON format.
     // So we must use JSON.parse() and thena access message on the parsed data
     message = JSON.parse(error.data).message;
+    message = error.data.message;
   }
   // error 404 is the default status set by React Router if we enter a path
   // that's not supported

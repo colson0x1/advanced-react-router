@@ -1,4 +1,4 @@
-import { useLoaderData } from 'react-router-dom';
+import { json, useLoaderData } from 'react-router-dom';
 
 /* Now, ther eis nothing wrong with debt code, but of course it is worth noting
  * that it's a quite some boiler plate code which we have to repeat everytime
@@ -202,9 +202,34 @@ export async function loader() {
     // as an error element.
     // And for that, React Router DOM gives us another special hook called
     // useRouteError hook. -> pages/Error.jsx
-    throw new Response(JSON.stringify({ message: 'Could not fetch events!' }), {
+    /* throw new Response(JSON.stringify({ message: 'Could not fetch events!' }), {
       status: 500,
-    });
+    }); */
+    // When using, React Router, we'll from time to time construct responses as
+    // we're doing it above especially when it comes to throwing errors.
+    // Constructing responses manually like this is possible but a bit annoying.
+    // That's why React Router gives us a little helper utility.
+    // Instead of creating our responses like that above, and returning in the
+    // else, we can return the result of calling json.
+    // json is a function that can be imported from react-router-dom
+    // json is a function that creates a response object that includes data
+    // in the json format
+    // To this json function, we simply pass our data that should be included
+    // in the response and we don't need to convert it to json manually.
+    // Instead it wil be done for us. And we can pass a second argument where
+    // we can set that extra response metadat like this status,
+    // And here we set the status to 500 again.
+    // With this json fn, we don't just have to write less code here but in the
+    // place where we use that response data, we also don't have to parse the
+    // json format manually. instead we can simplify the code (i.e remove JSON.parse())
+    // because the parsing will now be done by React Router for us in the
+    // pages/Error.jsx
+    throw json(
+      { message: 'Could not etch events!' },
+      {
+        status: 500,
+      },
+    );
   } else {
     /* const resData = await response.json(); */
     // One important aspect of a loader is that we can return any kind of
