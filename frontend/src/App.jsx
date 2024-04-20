@@ -9,7 +9,7 @@ import EventDetailPage, {
 import EventsPage, { loader as eventsLoader } from './pages/Events';
 import EventsRootLayout from './pages/EventsRoot';
 import HomePage from './pages/Home';
-import NewEventPage from './pages/NewEvent';
+import NewEventPage, { action as newEventAction } from './pages/NewEvent';
 import RootLayout from './pages/Root';
 
 // RouterProvider is needed to apply and activate our route definitions
@@ -188,6 +188,7 @@ const router = createBrowserRouter([
           // We use useRouteLoaderData instead of useLoaderData.
           // But now we can reuse that loader across multiple routes which
           // all needs the same data.
+
           {
             path: ':eventId',
             id: 'event-detail',
@@ -197,10 +198,19 @@ const router = createBrowserRouter([
                 index: true,
                 element: <EventDetailPage />,
               },
-              { path: 'new', element: <NewEventPage /> },
               { path: 'edit', element: <EditEventPage /> },
             ],
           },
+          // With action function, we can send request to the backend!!
+          // To add a action to this new route here, we add a special action property
+          // and just like loader, action wans a function.
+          // And just like with loaders, we typically don't wanna add our
+          // action functions here in our route definitions file but instead
+          // we want to keep that code close to the components to which it belongs.
+          // So here in this case, we want to add the action function in the
+          // NewEvent.jsx file
+          // { path: 'new', element: <NewEventPage />, action: () => {} },
+          { path: 'new', element: <NewEventPage />, action: newEventAction },
         ],
       },
     ],

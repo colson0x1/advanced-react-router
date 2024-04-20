@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Form, useNavigate } from 'react-router-dom';
 
 import classes from './EventForm.module.css';
 
@@ -8,8 +8,20 @@ function EventForm({ method, event }) {
     navigate('..');
   }
 
+  // next, we should replace the form element with the special Form component
+  // which is provided by React Router Dom
+  // Now this Form tag will make sure that the browser default of sending a
+  // request to the backend will be omitted but it will take that request
+  // that would've been sent and give it to your action
+  // And that's pretty useful because that request will contain all the data
+  // that was submitted as part of the form.
+  // Therefore we should add the method property and set this to post for example
+  // though this Form component also supports other HTTP  methods like delet or patch
+  // But this request and that's important, will not be sent to the backend
+  // automatically but instead to our action.
+  // And it will include all the form data if we use this special Form component
   return (
-    <form className={classes.form}>
+    <Form method='post' className={classes.form}>
       <p>
         <label htmlFor='title'>Title</label>
         <input
@@ -56,7 +68,7 @@ function EventForm({ method, event }) {
         </button>
         <button>Save</button>
       </div>
-    </form>
+    </Form>
   );
 }
 
