@@ -90,7 +90,17 @@ import EventsList from '../components/EventsList';
  * on a higher level than we're fetching the data!
  */
 function EventsPage() {
-  const events = useLoaderData();
+  // we can return response like this too and use the loaderData to automatically
+  // give us the data that's part of the response.
+  // Now we do have to make sure that we extract our events from the data object
+  // because that is actually an object with an events key, just as we
+  // extracted events from the response data in our loader function.
+  // WIth that we can reduce our loader code and leberage this builtin support for
+  // response objects.
+  // Hence, this special kind of return object is supported by React Router and
+  // its loader functions.
+  const data = useLoaderData();
+  const events = data.events;
 
   return (
     <>
@@ -113,7 +123,57 @@ export async function loader() {
   if (!response.ok) {
     // ..
   } else {
-    const resData = await response.json();
-    return resData.events;
+    /* const resData = await response.json(); */
+    // One important aspect of a loader is that we can return any kind of
+    // data in this loader.
+    // Here we're returning this events property or the values stored in
+    // events property of our response data and in this case it will actually
+    // be an array that we want to return.
+    // We could return a number, some text an object, .. whatever we want.
+    // And what we can also return is an response object
+    // The meaning of that is:
+    // Well, in the browser we can create a new response object lets call it
+    // res, by instantiating the builtin response constructor function.
+    // Now this is built into the browser. This is a modern browser feature.
+    // We can build our own responses and what's really important to understand
+    // at this point is, that this loader code in this async function, will not
+    // execute on a server!!
+    // This is all happening in the browser here even though it's (loader fn implementation)
+    // not in a component, it's still in the browser.
+    // This is still clien side code. That's really important.
+    // None the less we can create response here because the browser supports
+    // this response constructor and response object.
+    // Now this, response constructor also takes any data of our choice as a
+    // first argument and then we can configure it with greater detail with
+    // help of an extra object that can be set as a second argument.
+    // For example, we could set the state code of our response here
+    // Now, whenever we return such a response in our loaders, the React Router
+    // package will automatically extract the data from our response when
+    // using useLoaderData.
+    // So the data returned by useLoaderData will still be the response data
+    // that was part of the response we returned in our loader.
+    // Now that might not seem too useful here because why would we create a
+    // separate response object if we can just return the data like this:
+    // i.e return resData.events
+    // This is way shorter too.
+    // Well, it is, but this feature exists because its quite common that in
+    // this loader function, we reach out to some backend with the browser's
+    // built in fetch function.
+    // And this fetch function actually returns a promise that resolves to a
+    // response.
+    // Now combined with React Router's support for this response object and
+    // its automatic data extraction, that simply means that we can in the end,
+    // take that response which we get here,
+    // so this response object i.e const response = await fetch('.../events')
+    // and return that in our loader
+    // We don't need to manually extract data from the response
+    /* const res = new Response('any data', { status: 201 });
+    return res; */
+
+    // Instead we can return the response like this with or without checking
+    // whether its okay
+    /* return response; */
+    // But we can just return response like this:
+    return response;
   }
 }
