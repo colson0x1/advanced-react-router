@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import EditEventPage from './pages/EditEvent';
+import ErrorPage from './pages/Error';
 import EventDetailPage from './pages/EventDetail';
 // This is simply a pointer at that function which we define and export
 // there in Event.jsx
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
     // definitions
     // + turn first route for the HomePage into index route instead of defining
     // empty path
+    errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
       {
@@ -149,6 +151,7 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <EventsPage />,
+            // errorElement: <ErrorPage />,
             loader: eventsLoader,
           },
           { path: ':eventId', element: <EventDetailPage /> },

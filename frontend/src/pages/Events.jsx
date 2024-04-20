@@ -159,7 +159,36 @@ export async function loader() {
   // So now we return this data package instead of the response returned by our
   // API request here.
   if (!response.ok) {
-    return { isError: true, message: 'Cold not fetch events.' };
+    // return { isError: true, message: 'Cold not fetch events.' };
+    /* An alternative error handling i.e alternative to returning this data
+     * here to the component, we could throw an error.
+     * For this we can construct a new error object with the builtin error
+     * constructor function or we throw any other kind of object as an error.
+     * And here we could then also, for example: include a message.
+     * Now when Error gets thrown in loader, something special happens.
+     * React Router will simply render the closest error element.
+     * We have added `errorElement` on the root route of App.jsx to have
+     * a fallback page that would be displayed in case of 404 errors.
+     * So if we navigated to paths that aren't supported.
+     * Well, turns out that error element is not just there to show a fallback page
+     * in case of invalid route paths.
+     * That is one use case but not the only one.
+     * Instead the error element will be shown to the screen whenever an error
+     * is generated in any route related code, including loaders.
+     * So therefore, what we can do is, we can add error page again in pages/Error.jsx
+     * and create our error page component and export it.
+     * Now we can go to App.jsx and add `errorElement` prop to root route.
+     * With that, the Error page in pages/Error.jsx will be displayed whenever
+     * we basically have any kind of error anywhere in our routes because even
+     * though we're throwing an error here in the loader of the events page.
+     * We can also add that errorElement prop to deeply nested routes as well
+     * like the index route and in that case, this errorElement would be rendered
+     * if this loader threw an error.
+     * But we can also just have this Root level error element and the error will
+     * bubble up until it reaches that route in App.jsx
+     *
+     * */
+    throw { message: 'Could not fetch events..' };
   } else {
     /* const resData = await response.json(); */
     // One important aspect of a loader is that we can return any kind of
