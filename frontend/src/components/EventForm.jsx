@@ -1,9 +1,25 @@
-import { Form, useNavigate, useNavigation } from 'react-router-dom';
+import {
+  Form,
+  useNavigate,
+  useNavigation,
+  useActionData,
+} from 'react-router-dom';
 
 import classes from './EventForm.module.css';
 
 function EventForm({ method, event }) {
   const navigate = useNavigate();
+
+  // gives us access to the data returned by our action
+  // It gives us access to the closest action
+  // and if we return a response in an action, this response is automatically
+  // parsed by React Roter for us just as it is the case for loaders
+  // And therefore here, this data is the data that we return on our backend
+  // incase of validation errors
+  // and that would be an object with a general message and a nested errors
+  // object which has different keys for the different inputs with more
+  // detailed error messages in backend/routes/events.js
+  const data = useActionData();
 
   // gives us navigation object
   // we can extract various pieces of information from navigation object
@@ -56,6 +72,25 @@ function EventForm({ method, event }) {
     // <Form method='post' action='/any-other-path'> ... </Form>
 
     <Form method='post' className={classes.form}>
+      {/* Check if data is set because it will not be set if we haven't submitted
+      the form yet for example
+      Because that data is coming from an action. 
+      Object.values get us keys of the error object and we're maaping it 
+      * Doing this, we get error message if we remove 'required' props from 
+      * dev tools inspect elements for all input fields. i.e we get serverside
+      * error message this time on localhost:3000/events/new new event page form.
+      * These error messages are coming from my action where we return that response
+      * which we're getting from the backend and then picking up that return data
+      * from the action with the help of useActionData and we're outputting the
+      * data that's part of that return reponse here in our JSX code
+      */}
+      {data && data.errors && (
+        <ul>
+          {Object.values(data.errors).map((err) => (
+            <li key={err}>{err}</li>
+          ))}
+        </ul>
+      )}
       <p>
         <label htmlFor='title'>Title</label>
         <input

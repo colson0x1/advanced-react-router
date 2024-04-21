@@ -76,6 +76,10 @@ export async function action({ request, params }) {
     body: JSON.stringify(eventData),
   });
 
+  if (response.status === 422 ) {
+    return response;
+  }
+
   // we can for example check if its not ok
   if (!response.ok) {
     // json works for loaders as well as for actions
