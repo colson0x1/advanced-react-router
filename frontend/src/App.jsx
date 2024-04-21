@@ -10,8 +10,11 @@ import EventDetailPage, {
 import EventsPage, { loader as eventsLoader } from './pages/Events';
 import EventsRootLayout from './pages/EventsRoot';
 import HomePage from './pages/Home';
-import NewEventPage, { action as newEventAction } from './pages/NewEvent';
+import NewEventPage from './pages/NewEvent';
 import RootLayout from './pages/Root';
+// now using same action on different routes. this action is written such that it
+// will do slightly different things depending on how the form was submitted.
+import { action as manipulateEventAction } from './components/EventForm';
 
 // RouterProvider is needed to apply and activate our route definitions
 // createBrowserRouter fn is required to create these route definitions
@@ -200,7 +203,11 @@ const router = createBrowserRouter([
                 element: <EventDetailPage />,
                 action: deleteEventAction,
               },
-              { path: 'edit', element: <EditEventPage /> },
+              {
+                path: 'edit',
+                element: <EditEventPage />,
+                action: manipulateEventAction,
+              },
             ],
           },
           // With action function, we can send request to the backend!!
@@ -212,7 +219,11 @@ const router = createBrowserRouter([
           // So here in this case, we want to add the action function in the
           // NewEvent.jsx file
           // { path: 'new', element: <NewEventPage />, action: () => {} },
-          { path: 'new', element: <NewEventPage />, action: newEventAction },
+          {
+            path: 'new',
+            element: <NewEventPage />,
+            action: manipulateEventAction,
+          },
         ],
       },
     ],
