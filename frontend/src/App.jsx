@@ -3,6 +3,7 @@ import EditEventPage from './pages/EditEvent';
 import ErrorPage from './pages/Error';
 import EventDetailPage, {
   loader as eventDetailLoader,
+  action as deleteEventAction,
 } from './pages/EventDetail';
 // This is simply a pointer at that function which we define and export
 // there in Event.jsx
@@ -197,6 +198,7 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <EventDetailPage />,
+                action: deleteEventAction,
               },
               { path: 'edit', element: <EditEventPage /> },
             ],

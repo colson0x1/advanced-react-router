@@ -21,6 +21,21 @@ function EventForm({ method, event }) {
   // automatically but instead to our action.
   // And it will include all the form data if we use this special Form component
   return (
+    // THe typical and default way is to use this special Form component offered
+    // by React Router. that's the standard way we should use.
+    // This form will automatically trigger the action function of the
+    // currently active route. So the route for which this form was loaded.
+    // Now we could send the request to the differnt route by adding
+    // the action prop here to this form component and setting this to any
+    // other path. Then in that case, the action of another path of another
+    // route definition object, would be triggered.
+    // So if we had an action on some other route here, we could point at that
+    // action by simply setting the form's actino prop value to the path
+    // of the route for which we wanna trigger the action. but if we wanna
+    // trigger the action, of the currently active route, we don't need the
+    // action prop.
+    // <Form method='post' action='/any-other-path'> ... </Form>
+
     <Form method='post' className={classes.form}>
       <p>
         <label htmlFor='title'>Title</label>
