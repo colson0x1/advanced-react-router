@@ -33,6 +33,8 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
+// this will be triggered whenever we try to save a new event
+// adding short delay
 router.post('/', async (req, res, next) => {
   const data = req.body;
 
@@ -63,6 +65,11 @@ router.post('/', async (req, res, next) => {
 
   try {
     await add(data);
+    // adding delay
+    // wait 1/2 seconds before sending this success response
+    /* setTimeout(() => {
+      res.status(201).json({ message: 'Event saved.', event: data });
+    }, 1500); */
     res.status(201).json({ message: 'Event saved.', event: data });
   } catch (error) {
     next(error);

@@ -1,9 +1,28 @@
-import { Form, useNavigate } from 'react-router-dom';
+import { Form, useNavigate, useNavigation } from 'react-router-dom';
 
 import classes from './EventForm.module.css';
 
 function EventForm({ method, event }) {
   const navigate = useNavigate();
+
+  // gives us navigation object
+  // we can extract various pieces of information from navigation object
+  // for example: all the dat that was submitted
+  // but we can also find out what the current state, of the currently active
+  // transition is.
+  // And we have a transition from one route to another if we click a link.
+  // But we also have a transition if we submit a form.
+  // And therefore, we also get information about the current data submission
+  // process and whether it completed already
+  // So whether the action that was triggered completely already
+  const navigation = useNavigation();
+  // SO here we can add a helper constant called isSubmitting and in there, we
+  // simply store the result of comparing navigation.state to submitting.
+  // if the current state is submitting, we know that we are currently submitting
+  // data so that the action that was triggered is currently still active
+  // WE can use that isSubmitting field to disable button down below on return
+  const isSubmitting = navigation.state === 'submitting';
+
   function cancelHandler() {
     navigate('..');
   }
@@ -78,10 +97,12 @@ function EventForm({ method, event }) {
         />
       </p>
       <div className={classes.actions}>
-        <button type='button' onClick={cancelHandler}>
+        <button type='button' onClick={cancelHandler} disabled={isSubmitting}>
           Cancel
         </button>
-        <button>Save</button>
+        <button disabled={isSubmitting}>
+          {isSubmitting ? 'Submitting...' : 'Save'}
+        </button>
       </div>
     </Form>
   );
