@@ -39,7 +39,7 @@ function EventsList({ events }) {
         {events.map((event) => (
           <li key={event.id} className={classes.item}>
             {/* // relative path. relative to the currenly active route */}
-            <Link to={event.id}>
+            <Link to={`/events/${event.id}`}>
               <img src={event.image} alt={event.title} />
               <div className={classes.content}>
                 <h2>{event.title}</h2>
