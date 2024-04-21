@@ -15,6 +15,7 @@ import RootLayout from './pages/Root';
 // now using same action on different routes. this action is written such that it
 // will do slightly different things depending on how the form was submitted.
 import { action as manipulateEventAction } from './components/EventForm';
+import NewsletterPage, { action as newsLetterAction } from './pages/Newsletter';
 
 // RouterProvider is needed to apply and activate our route definitions
 // createBrowserRouter fn is required to create these route definitions
@@ -225,6 +226,11 @@ const router = createBrowserRouter([
             action: manipulateEventAction,
           },
         ],
+      },
+      {
+        path: 'newsletter',
+        element: <NewsletterPage />,
+        action: newsLetterAction,
       },
     ],
   },
