@@ -227,6 +227,15 @@ const router = createBrowserRouter([
           },
         ],
       },
+      /* Newsletter is not just on one single page, but on all pages.
+       * The problem with that is, that of course we wanna trigger this
+       * action newsLetterAction, wheneever this newsletter form is submitted.
+       * And if we're on the newsletter page, that would be quite straightforward
+       * to do. All we have to do is go to components/NewsletterSignup.jsx
+       * and use React Router Form component.
+       * That would automatically trigger the action the belong to the currently
+       * active route.
+       */
       {
         path: 'newsletter',
         element: <NewsletterPage />,
